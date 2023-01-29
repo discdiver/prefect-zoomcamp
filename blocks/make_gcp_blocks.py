@@ -9,12 +9,12 @@ from prefect_gcp.cloud_storage import GcsBucket
 credentials_block = GcpCredentials(
     service_account_info={}  # enter your credentials info or use the file method.
 )
-credentials_block.save("zoom-gcp-creds", overwrite=True)
+credentials_block.save("dtc-gcp-credentials", overwrite=True)
 
 
 bucket_block = GcsBucket(
-    gcp_credentials=GcpCredentials.load("zoom-gcp-creds"),
-    bucket="prefect-de-zoomcamp",  # insert your  GCS bucket name
+    gcp_credentials=GcpCredentials.load("dtc-gcp-credentials"),
+    bucket="dtc_data_lake_dtc-data-engineering-375007",  # insert your  GCS bucket name
 )
 
-bucket_block.save("zoom-gcs", overwrite=True)
+bucket_block.save("dtc-gcs", overwrite=True)
