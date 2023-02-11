@@ -136,7 +136,7 @@ add newline `log_subflow(table_name)` to the main() flow
 Alright let’s run the flow and then open the open source UI to visual. 
 
 `python ingest_data.py`
-`python orion start`
+`prefect orion start`
 
 This should default but if your having problem or just want to make sure you set the prefect config to point to the api URL. This is especially important if you are going to host the Url somewhere else and need to change the url for the api that your flows are communicating with. 
 
