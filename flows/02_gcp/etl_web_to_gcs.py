@@ -16,10 +16,10 @@ def fetch(dataset_url: str) -> pd.DataFrame:
 
 
 @task(log_prints=True)
-def clean(df: pd.DataFrame) -> pd.DataFrame:
+def clean(df: pd.DataFrame, date_cols: list) -> pd.DataFrame:
     """Fix dtype issues"""
-    df["tpep_pickup_datetime"] = pd.to_datetime(df["tpep_pickup_datetime"])
-    df["tpep_dropoff_datetime"] = pd.to_datetime(df["tpep_dropoff_datetime"])
+    for col in date_cols:
+        df[col] = pd.to_datetime(df[col])
     print(df.head(2))
     print(f"columns: {df.dtypes}")
     print(f"rows: {len(df)}")
@@ -52,7 +52,10 @@ def etl_web_to_gcs() -> None:
     dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{color}/{dataset_file}.csv.gz"
 
     df = fetch(dataset_url)
-    df_clean = clean(df)
+    if color == "yellow":
+        df_clean = clean(df, ["tpep_pickup_datetime","tpep_dropoff_datetime"])
+    elif color == "green":
+        df_clean = clean(df, ["lpep_pickup_datetime","lpep_dropoff_datetime"])
     path = write_local(df_clean, color, dataset_file)
     write_gcs(path)
 
